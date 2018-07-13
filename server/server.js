@@ -10,6 +10,7 @@ app.use(express.static(publicPath));
 
 app.listen(3000, () => {
     console.log(`Server is up on ${port}`);
+    console.log('MICHAEL');
 });
 
 // UPLOAD TO GITHUB AND HEROKU
