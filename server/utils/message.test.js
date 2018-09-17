@@ -7,6 +7,9 @@ describe('generateMessage', () => {
         let res = generateMessage('Mike', 'Ma message');
         expect(res.from).toBe('Mike');
         expect(res.text).toBe('Ma message');
-        
+
+        // Both these lines do the same thing
+        // expect(!isNaN(res.createdAt)).toBeTruthy();
+        expect(typeof res.createdAt).toBe('number');
     });
 });
