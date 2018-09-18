@@ -16,14 +16,16 @@ socket.on('newMessage', function (newMessage) {
 });
 
 socket.on('newLocationMessage', function (locationMessage) {
-    var li = document.createElement('li');
-    li.textContent = `${locationMessage.from}: `;
-    var a = document.createElement('a');
-    a.setAttribute('target', '_blank');
-    a.setAttribute('href', locationMessage.url);
-    a.textContent = 'My current location';
-    li.appendChild(a);
-    message.appendChild(li);
+        var li = document.createElement('li');
+        li.textContent = `${locationMessage.from}: `;
+        var a = document.createElement('a');
+        a.setAttribute('target', '_blank');
+        a.setAttribute('href', locationMessage.url);
+        a.textContent = 'My current location';
+        li.appendChild(a);
+        message.appendChild(li);
+        // re-enabled location button
+        locationButton.removeAttribute('disabled');
 });
 
 socket.on('disconnect', function () {
@@ -33,11 +35,12 @@ socket.on('disconnect', function () {
 // submits message to server
 form.addEventListener('submit', function (e) {
     e.preventDefault();
+
     socket.emit('createMessage', {
         from: 'User',
         text: input.value
     }, function (data) {
-        console.log(data);
+        input.value = '';
     });
 });
 
@@ -47,6 +50,8 @@ locationButton.addEventListener('click', function () {
         return alert('Geolocation not supported by your browser.');
     }
 
+    console.log('running');
+    locationButton.setAttribute('disabled', 'disabled');
     navigator.geolocation.getCurrentPosition(function (position) {
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
