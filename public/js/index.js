@@ -26,6 +26,7 @@ socket.on('newLocationMessage', function (locationMessage) {
         message.appendChild(li);
         // re-enabled location button
         locationButton.removeAttribute('disabled');
+        locationButton.textContent = 'Send location';
 });
 
 socket.on('disconnect', function () {
@@ -50,8 +51,10 @@ locationButton.addEventListener('click', function () {
         return alert('Geolocation not supported by your browser.');
     }
 
-    console.log('running');
+    // disabling location button during sending
     locationButton.setAttribute('disabled', 'disabled');
+    locationButton.textContent = 'Sending location...';
+
     navigator.geolocation.getCurrentPosition(function (position) {
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
@@ -59,5 +62,8 @@ locationButton.addEventListener('click', function () {
         });
     }, function () {
         alert('Unable to fetch location.');
+        // re-enabled location button
+        locationButton.removeAttribute('disabled');
+        locationButton.textContent = 'Send location';
     });
 });
