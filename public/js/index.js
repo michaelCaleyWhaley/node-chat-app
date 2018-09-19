@@ -1,6 +1,6 @@
 var form = document.getElementById('message-form');
 var input = document.getElementsByTagName('input').message;
-var message = document.getElementById('messages');
+var messages = document.getElementById('messages');
 var locationButton = document.getElementById('send-location');
 var socket = io();
 
@@ -11,9 +11,13 @@ socket.on('connect', function () {
 // prints message to screen
 socket.on('newMessage', function (newMessage) {
     var formattedTime = moment(newMessage.createdAt).format('HH:mm');
-    var li = document.createElement('li');
-    li.textContent = newMessage.from + ' ' + formattedTime + ': ' + newMessage.text;
-    message.appendChild(li);
+    var template = document.getElementById('message-template').innerHTML;
+    var html = Mustache.render(template, {
+        text: newMessage.text,
+        from: newMessage.from,
+        createdAt: formattedTime
+    });
+    messages.innerHTML += html;
 });
 
 socket.on('newLocationMessage', function (locationMessage) {
@@ -25,7 +29,7 @@ socket.on('newLocationMessage', function (locationMessage) {
     a.setAttribute('href', locationMessage.url);
     a.textContent = 'My current location';
     li.appendChild(a);
-    message.appendChild(li);
+    messages.appendChild(li);
     // re-enabled location button
     locationButton.removeAttribute('disabled');
     locationButton.textContent = 'Send location';
