@@ -10,23 +10,25 @@ socket.on('connect', function () {
 
 // prints message to screen
 socket.on('newMessage', function (newMessage) {
+    var formattedTime = moment(newMessage.createdAt).format('HH:mm');
     var li = document.createElement('li');
-    li.textContent = newMessage.from + ': ' + newMessage.text;
+    li.textContent = newMessage.from + ' ' + formattedTime + ': ' + newMessage.text;
     message.appendChild(li);
 });
 
 socket.on('newLocationMessage', function (locationMessage) {
-        var li = document.createElement('li');
-        li.textContent = `${locationMessage.from}: `;
-        var a = document.createElement('a');
-        a.setAttribute('target', '_blank');
-        a.setAttribute('href', locationMessage.url);
-        a.textContent = 'My current location';
-        li.appendChild(a);
-        message.appendChild(li);
-        // re-enabled location button
-        locationButton.removeAttribute('disabled');
-        locationButton.textContent = 'Send location';
+    var formattedTime = moment(locationMessage.createdAt).format('HH:mm');
+    var li = document.createElement('li');
+    li.textContent = locationMessage.from + ' ' + formattedTime + ': ';
+    var a = document.createElement('a');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('href', locationMessage.url);
+    a.textContent = 'My current location';
+    li.appendChild(a);
+    message.appendChild(li);
+    // re-enabled location button
+    locationButton.removeAttribute('disabled');
+    locationButton.textContent = 'Send location';
 });
 
 socket.on('disconnect', function () {
