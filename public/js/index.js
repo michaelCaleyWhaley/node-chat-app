@@ -22,15 +22,14 @@ socket.on('newMessage', function (newMessage) {
 
 socket.on('newLocationMessage', function (locationMessage) {
     var formattedTime = moment(locationMessage.createdAt).format('HH:mm');
-    var li = document.createElement('li');
-    li.textContent = locationMessage.from + ' ' + formattedTime + ': ';
-    var a = document.createElement('a');
-    a.setAttribute('target', '_blank');
-    a.setAttribute('href', locationMessage.url);
-    a.textContent = 'My current location';
-    li.appendChild(a);
-    messages.appendChild(li);
-    // re-enabled location button
+    var template = document.getElementById('location-message-template').innerHTML;
+    var html = Mustache.render(template, {
+        from: locationMessage.from,
+        createdAt: formattedTime,
+        url: locationMessage.url
+    });
+    messages.innerHTML += html;
+    // // re-enabled location button
     locationButton.removeAttribute('disabled');
     locationButton.textContent = 'Send location';
 });
@@ -42,6 +41,7 @@ socket.on('disconnect', function () {
 // submits message to server
 form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if(input.value === ''){return false;}
 
     socket.emit('createMessage', {
         from: 'User',
