@@ -2,7 +2,23 @@ var form = document.getElementById('message-form');
 var input = document.getElementsByTagName('input').message;
 var messages = document.getElementById('messages');
 var locationButton = document.getElementById('send-location');
+
 var socket = io();
+
+function scrollToBottom() {
+    var newMessage = messages.querySelector('li:last-child');
+
+    var clientHeight = messages.clientHeight;
+    var scrollTop = messages.scrollTop;
+    var scrollHeight = messages.scrollHeight;
+    var newMessageHeight = newMessage.offsetHeight;
+
+    var lastMessageHeight = newMessage.previousElementSibling ? newMessage.previousElementSibling.offsetHeight : 0;
+
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop = scrollHeight;
+    }
+}
 
 socket.on('connect', function () {
     console.log('Connected to server');
@@ -18,6 +34,7 @@ socket.on('newMessage', function (newMessage) {
         createdAt: formattedTime
     });
     messages.innerHTML += html;
+    scrollToBottom();
 });
 
 socket.on('newLocationMessage', function (locationMessage) {
@@ -32,6 +49,7 @@ socket.on('newLocationMessage', function (locationMessage) {
     // // re-enabled location button
     locationButton.removeAttribute('disabled');
     locationButton.textContent = 'Send location';
+    scrollToBottom();
 });
 
 socket.on('disconnect', function () {
@@ -41,7 +59,7 @@ socket.on('disconnect', function () {
 // submits message to server
 form.addEventListener('submit', function (e) {
     e.preventDefault();
-    if(input.value === ''){return false;}
+    if (input.value === '') { return false; }
 
     socket.emit('createMessage', {
         from: 'User',
