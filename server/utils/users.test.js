@@ -38,4 +38,36 @@ describe('Users', () => {
 
     });
 
+    it('should remove a user', () => {
+        users.removeUser('2');
+        expect(users.users.length).toBe(2);
+    });
+
+    it('should not remove a user', () => {
+        users.removeUser(NaN);
+        expect(users.users.length).toBe(3);
+    });
+
+    it('should find user', () => {
+        let user = users.getUser('2');
+        expect(user).toBe(users.users[1]);
+    });
+
+    it('should not find user', () => {
+        let user = users.getUser('asd');
+        expect(user).toBeFalsy();
+    });
+
+    it('should return names for starWars room', () => {
+        let userList = users.getUserList('starWars');
+
+        expect(userList).toEqual(['Mike', 'Brad']);
+    });
+
+    it('should return names for starTrek room', () => {
+        let userList = users.getUserList('starTrek');
+
+        expect(userList).toEqual(['Jen']);
+    });
+
 });
