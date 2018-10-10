@@ -17,10 +17,6 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected');
 
-
-
-
-
     socket.on('join', (params, callback) => {
         if (!isRealString(params.name) || !isRealString(params.room)) {
             callback('Name and room name are required');
@@ -34,13 +30,6 @@ io.on('connection', (socket) => {
         // if no error callback is called without arguement. Arguement singals problem
         callback();
     });
-
-
-
-
-
-
-
 
     socket.on('createMessage', (createdMessage, callback) => {
         io.emit('newMessage', generateMessage(createdMessage.from, createdMessage.text));
