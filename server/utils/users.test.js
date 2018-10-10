@@ -38,6 +38,7 @@ describe('Users', () => {
 
     });
 
+    
     it('should remove a user', () => {
         users.removeUser('2');
         expect(users.users.length).toBe(2);
