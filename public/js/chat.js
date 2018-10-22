@@ -21,11 +21,11 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function () {
-    
+
     var params = window.deparam(window.location.search);
 
-    socket.emit('join', params, function(err){
-        if(err){
+    socket.emit('join', params, function (err) {
+        if (err) {
             alert(err);
             window.location.href = '/';
         } else {
@@ -68,6 +68,17 @@ socket.on('newLocationMessage', function (locationMessage) {
 
 socket.on('disconnect', function () {
     console.log('Disconnect from server');
+});
+
+socket.on('updateUserList', function (users) {
+    var userList = document.createElement('ol');
+    users.forEach(function (user) {
+        var li = document.createElement('li');
+        li.innerHTML = user;
+        userList.appendChild(li);
+    });
+    document.getElementById('users').innerHTML = '';
+    document.getElementById('users').appendChild(userList);
 });
 
 // submits message to server
