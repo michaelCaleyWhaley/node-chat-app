@@ -33,9 +33,6 @@ socket.on('connect', function () {
         }
     });
 
-
-
-
 });
 
 // prints message to screen
@@ -87,7 +84,6 @@ form.addEventListener('submit', function (e) {
     if (input.value === '') { return false; }
 
     socket.emit('createMessage', {
-        from: 'User',
         text: input.value
     }, function (data) {
         input.value = '';
