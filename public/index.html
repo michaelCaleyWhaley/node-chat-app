@@ -28,8 +28,24 @@
                 <button>Join chat</button>
             </div>
         </form>
+        <div class="room">
+            <h4 class="room__title">Active rooms</h4>
+            <ul class="room__list">
+            </ul>
+        </div>
     </div>
 
+
+
+
+
+    <script id="room__list__item" type="text/template">
+        <li>{{room}}</li>
+    </script>
+
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./libs/mustache.js"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>

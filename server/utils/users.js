@@ -4,8 +4,8 @@ class Users {
         this.users = [];
     }
 
-    addUser(id, name, room) {
-        let user = { id, name, room };
+    addUser(id, name, room, roomAlias) {
+        let user = { id, name, room, roomAlias };
         this.users.push(user);
         return user;
     }
@@ -19,7 +19,7 @@ class Users {
     }
 
     getUser(id) {
-        var user = this.users.filter((el, index, array) => { 
+        var user = this.users.filter((el, index, array) => {
             return el.id === id.toString();
         });
         return user[0];
@@ -29,12 +29,21 @@ class Users {
         var users = this.users.filter((user) => {
             return user.room === room;
         });
-
         var namesArray = users.map((user) => {
             return user.name;
         });
-
         return namesArray;
+    }
+
+    getRoomList() {
+        if (!this.users || this.users.length < 1) {
+            return ['No active rooms.'];
+        }
+        var roomsArray = [];
+        this.users.forEach((user) => {
+            roomsArray.push(user.roomAlias);
+        });
+        return roomsArray;
     }
 }
 
