@@ -7,3 +7,20 @@ button,button:hover{border:none;color:#fff;padding:10px}.chat__messages,.chat__s
 .room__list {
   list-style-type: square;
 }
+
+#send-nudge {
+  margin-left: 10px;
+}
+
+.nudge-animation {
+  animation: nudgeAnimation 0.8s linear;
+}
+
+@keyframes nudgeAnimation {
+  0% {transform: rotate(0deg);}
+  20% {transform: rotate(5deg);}
+  45% {transform: rotate(-5deg);}
+  70% {transform: rotate(5deg);}
+  90% {transform: rotate(-5deg);}
+  100% {transform: rotate(0deg);}
+}
